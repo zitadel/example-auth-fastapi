@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import logging
 import secrets
-from typing import Any, Dict, cast, Optional
+from typing import Any, Dict, Optional, cast
 from urllib.parse import urlencode
 
 from authlib.integrations.starlette_client import OAuth
-from fastapi import FastAPI, APIRouter, Request, Form, Depends
+from fastapi import APIRouter, FastAPI, Form, Request
 from fastapi.responses import RedirectResponse
 
 from lib.config import config
@@ -62,9 +62,9 @@ async def signin(request: Request) -> Any:
     ]
 
     return templates.TemplateResponse(
-        "auth/signin.html",
-        {
-            "request": request,
+        request=request,
+        name="auth/signin.html",
+        context={
             "url_for": request.url_for,
             "providers": providers,
             "callbackUrl": request.query_params.get("callbackUrl") or config.ZITADEL_POST_LOGIN_URL,
@@ -76,17 +76,17 @@ async def signin(request: Request) -> Any:
 @auth_bp.post("/signin/zitadel", name="auth_signin_zitadel")
 async def signin_zitadel(
     request: Request,
-    csrfToken: str = Form(...),
-    callbackUrl: Optional[str] = Form(None),
+    csrf_token: str = Form(..., alias="csrfToken"),
+    callback_url: Optional[str] = Form(None, alias="callbackUrl"),
 ) -> RedirectResponse:
     """Initiate OAuth 2.0 authorization flow with PKCE."""
     stored_token = request.session.get("csrf_token")
 
-    if not csrfToken or not stored_token or not secrets.compare_digest(csrfToken, stored_token):
+    if not csrf_token or not stored_token or not secrets.compare_digest(csrf_token, stored_token):
         return RedirectResponse(f"{request.url_for('signin')}?error=verification", status_code=302)
 
     request.session.pop("csrf_token", None)
-    request.session["post_login_url"] = callbackUrl or config.ZITADEL_POST_LOGIN_URL
+    request.session["post_login_url"] = callback_url or config.ZITADEL_POST_LOGIN_URL
 
     redirect_uri = config.ZITADEL_CALLBACK_URL
     resp = await oauth.zitadel.authorize_redirect(request, redirect_uri)
@@ -165,14 +165,14 @@ async def logout_callback(request: Request) -> RedirectResponse:
 @auth_bp.get("/logout/success")
 async def logout_success(request: Request) -> Any:
     templates = request.app.state.templates
-    return templates.TemplateResponse("auth/logout/success.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="auth/logout/success.html")
 
 
 @auth_bp.get("/logout/error")
 async def logout_error(request: Request) -> Any:
     templates = request.app.state.templates
     reason = request.query_params.get("reason", "Unknown error")
-    return templates.TemplateResponse("auth/logout/error.html", {"request": request, "reason": reason})
+    return templates.TemplateResponse(request=request, name="auth/logout/error.html", context={"reason": reason})
 
 
 @auth_bp.get("/error")
@@ -180,15 +180,13 @@ async def error_page(request: Request) -> Any:
     templates = request.app.state.templates
     error_code = request.query_params.get("error")
     msg = get_message(error_code, "auth-error")
-    return templates.TemplateResponse("auth/error.html", {"request": request, **msg})
+    return templates.TemplateResponse(request=request, name="auth/error.html", context=msg)
 
 
 @auth_bp.get("/userinfo")
-async def userinfo(
-    request: Request,
-    auth_session: Dict[str, Any] = Depends(require_auth),
-) -> Dict[str, Any]:
+async def userinfo(request: Request) -> Dict[str, Any]:
     """Fetch fresh user information from ZITADEL."""
+    auth_session = await require_auth(request)
     access_token = auth_session.get("access_token")
     if not access_token:
         return {"error": "No access token available"}

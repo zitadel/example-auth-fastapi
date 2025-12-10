@@ -9,6 +9,7 @@ from __future__ import annotations
 import os
 
 import uvicorn
+
 from lib.config import config
 
 if __name__ == "__main__":

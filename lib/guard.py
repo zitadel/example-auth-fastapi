@@ -12,7 +12,7 @@ from fastapi.responses import RedirectResponse, Response
 logger = logging.getLogger(__name__)
 
 
-class RedirectException(Exception):
+class RedirectError(Exception):
     """Internal exception used to trigger redirect logic."""
 
     def __init__(self, url: str) -> None:
@@ -63,12 +63,12 @@ async def require_auth(request: Request) -> Dict[str, Any]:
 
     if not auth_session or not auth_session.get("user"):
         cb = str(request.url)
-        raise RedirectException(f"{request.url_for('signin')}?callbackUrl={cb}")
+        raise RedirectError(f"{request.url_for('signin')}?callbackUrl={cb}")
 
     if auth_session.get("error"):
         session.clear()
         cb = str(request.url)
-        raise RedirectException(f"{request.url_for('signin')}?callbackUrl={cb}")
+        raise RedirectError(f"{request.url_for('signin')}?callbackUrl={cb}")
 
     expires_at = auth_session.get("expires_at")
     if expires_at and int(time.time()) >= expires_at:
@@ -76,10 +76,10 @@ async def require_auth(request: Request) -> Dict[str, Any]:
         if refreshed is None:
             session.clear()
             cb = str(request.url)
-            raise RedirectException(f"{request.url_for('signin')}?callbackUrl={cb}")
+            raise RedirectError(f"{request.url_for('signin')}?callbackUrl={cb}")
 
         session["auth_session"] = refreshed
-        assert refreshed is not None  # for mypy
+        assert refreshed is not None
         return refreshed
 
     return auth_session
@@ -87,6 +87,6 @@ async def require_auth(request: Request) -> Dict[str, Any]:
 
 def redirect_exception_handler(request: Request, exc: Exception) -> Response:
     """Translate internal redirect exceptions into RedirectResponse."""
-    if not isinstance(exc, RedirectException):
+    if not isinstance(exc, RedirectError):
         raise exc
-    return RedirectResponse(url=exc.url, status_code=302)
+    return RedirectResponse(url=exc.url, status_code=307)
