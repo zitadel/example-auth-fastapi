@@ -81,5 +81,8 @@ ignore_unused = [
   "mypy",
   "pytest-cov",
   "pytest",
-  "ruff"
+  "ruff",
+  'starlette',
+  'httpx',
+  'python-multipart'
 ]
