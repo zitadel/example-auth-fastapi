@@ -12,7 +12,8 @@ dependencies = [
   "httpx (>=0.28.1,<0.29.0)",
   "python-multipart (>=0.0.20,<0.0.21)",
   "starlette (<0.50.0)",
-  "itsdangerous>=2.0.0,<3.0.0"
+  "itsdangerous>=2.0.0,<3.0.0",
+  "jinja2>=3.0.0,<4.0.0"
 ]
 
 [project.urls]
@@ -31,6 +32,7 @@ python-dotenv = ">=1.0.0,<2.0.0"
 requests = ">=2.32.0,<3.0.0"
 uvicorn = ">=0.29,<1.0"
 itsdangerous = ">=2.0.0,<3.0.0"
+jinja2 = ">=3.0.0,<4.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
