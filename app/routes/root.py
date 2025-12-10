@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import HTMLResponse
 
 from lib.guard import require_auth
@@ -26,8 +26,10 @@ async def home(request: Request) -> Any:
 
 
 @router.get("/profile", response_class=HTMLResponse)
-async def profile(request: Request) -> Any:
-    auth_session = await require_auth(request)
+async def profile(
+    request: Request,
+    auth_session: dict[str, Any] = Depends(require_auth),  # noqa: B008
+) -> Any:
     user_json = json.dumps(auth_session.get("user", {}), indent=2)
     return request.app.state.templates.TemplateResponse(
         request=request,

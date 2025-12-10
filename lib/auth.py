@@ -8,7 +8,7 @@ from typing import Any, Dict, Optional, cast
 from urllib.parse import urlencode
 
 from authlib.integrations.starlette_client import OAuth
-from fastapi import APIRouter, FastAPI, Form, Request
+from fastapi import APIRouter, Depends, FastAPI, Form, Request
 from fastapi.responses import RedirectResponse
 
 from lib.config import config
@@ -184,9 +184,11 @@ async def error_page(request: Request) -> Any:
 
 
 @auth_bp.get("/userinfo")
-async def userinfo(request: Request) -> Dict[str, Any]:
+async def userinfo(
+    request: Request,
+    auth_session: Dict[str, Any] = Depends(require_auth),  # noqa: B008
+) -> Dict[str, Any]:
     """Fetch fresh user information from ZITADEL."""
-    auth_session = await require_auth(request)
     access_token = auth_session.get("access_token")
     if not access_token:
         return {"error": "No access token available"}
