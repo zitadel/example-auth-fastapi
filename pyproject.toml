@@ -91,5 +91,6 @@ ignore_unused = [
   'starlette',
   'httpx',
   'python-multipart',
-  'itsdangerous'
+  'itsdangerous',
+  'jinja2'
 ]
