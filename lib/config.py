@@ -8,6 +8,7 @@ is missing, the application will not start.
 from __future__ import annotations
 
 import os
+from typing import Optional
 from urllib.parse import urlparse
 
 from dotenv import load_dotenv
@@ -66,8 +67,8 @@ class Config:
     SESSION_SECRET: str = must("SESSION_SECRET")
     SESSION_DURATION: int = int(os.getenv("SESSION_DURATION", "3600"))
 
-    PORT: str | None = os.getenv("PORT")
-    PY_ENV: str | None = os.getenv("PY_ENV")
+    PORT: Optional[str] = os.getenv("PORT")
+    PY_ENV: Optional[str] = os.getenv("PY_ENV")
 
 
 config = Config()

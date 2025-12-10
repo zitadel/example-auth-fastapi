@@ -8,14 +8,13 @@ from __future__ import annotations
 
 import os
 
-from app import create_app
+import uvicorn
 from lib.config import config
 
-app = create_app()
-
 if __name__ == "__main__":
-    app.run(
+    uvicorn.run(
+        "app.main:app",
         host=os.getenv("HOST", "localhost"),
         port=int(config.PORT or 3000),
-        debug=config.PY_ENV != "production",
+        reload=config.PY_ENV != "production",
     )

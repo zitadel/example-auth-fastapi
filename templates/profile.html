@@ -5,7 +5,7 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <img
-          src="{{ url_for('static', filename='app-logo.svg') }}"
+          src="{{ url_for('static', path='app-logo.svg') }}"
           alt="App Icon"
           width="40"
           height="40"
@@ -13,7 +13,7 @@
         />
         <h1 class="text-xl font-semibold text-gray-900">Demo Application</h1>
       </div>
-      <form id="logoutForm" action="{{ url_for('auth.logout') }}" method="post">
+      <form id="logoutForm" action="{{ url_for('logout') }}" method="post">
         <button
           id="logoutButton"
           type="submit"
@@ -200,7 +200,7 @@
       <div class="flex items-center space-x-2">
         <span class="text-sm text-gray-600">Powered by</span>
         <img
-          src="{{ url_for('static', filename='zitadel-logo.svg') }}"
+          src="{{ url_for('static', path='zitadel-logo.svg') }}"
           alt="ZITADEL"
           width="295"
           height="81"

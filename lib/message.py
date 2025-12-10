@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Optional
+
 
 def _signin_error_message(error_code: str) -> dict[str, str]:
     """Get error message for sign-in flow errors."""
@@ -78,7 +80,7 @@ def _auth_error_message(error_code: str) -> dict[str, str]:
 
 def get_message(error_input: str | list[str] | None, category: str) -> dict[str, str]:
     """Retrieve a user-friendly error message based on error code and category."""
-    raw: str | None
+    raw: Optional[str]
     if isinstance(error_input, list) and error_input:
         raw = error_input[0]
     else:

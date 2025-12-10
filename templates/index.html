@@ -4,7 +4,7 @@
   <div class="max-w-7xl mx-auto px-6 py-4">
     <div class="flex items-center space-x-3">
       <img
-        src="{{ url_for('static', filename='app-logo.svg') }}"
+        src="{{ url_for('static', path='app-logo.svg') }}"
         alt="App Icon"
         width="40"
         height="40"
@@ -103,7 +103,7 @@
                 class="w-80 h-32 bg-white rounded-lg flex items-center justify-center mx-auto mb-6"
               >
                 <img
-                  src="{{ url_for('static', filename='openid-logo.svg') }}"
+                  src="{{ url_for('static', path='openid-logo.svg') }}"
                   alt="OpenID"
                   width="288"
                   height="112"
@@ -191,7 +191,7 @@
       <div class="flex items-center space-x-2">
         <span class="text-sm text-gray-600">Powered by</span>
         <img
-          src="{{ url_for('static', filename='zitadel-logo.svg') }}"
+          src="{{ url_for('static', path='zitadel-logo.svg') }}"
           alt="ZITADEL"
           width="295"
           height="81"

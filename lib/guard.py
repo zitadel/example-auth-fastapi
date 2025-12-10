@@ -4,41 +4,44 @@ from __future__ import annotations
 
 import logging
 import time
-from functools import wraps
-from typing import Any, Callable, TypeVar, cast
+from typing import Any, Dict
 
-from flask import Response, g, redirect, request, session, url_for
+from fastapi import Request
+from fastapi.responses import RedirectResponse, Response
 
 logger = logging.getLogger(__name__)
 
-F = TypeVar("F", bound=Callable[..., Any])
+
+class RedirectException(Exception):
+    """Internal exception used to trigger redirect logic."""
+
+    def __init__(self, url: str) -> None:
+        self.url = url
 
 
-def refresh_access_token(auth_session: dict[str, Any]) -> dict[str, Any] | None:
+async def refresh_access_token(auth_session: Dict[str, Any]) -> Dict[str, Any] | None:
     """Automatically refresh an expired access token using the refresh token."""
     refresh_token = auth_session.get("refresh_token")
     if not refresh_token:
-        logger.error("No refresh token available for refresh")
         auth_session["error"] = "RefreshAccessTokenError"
         return None
 
     try:
         from lib.auth import oauth
 
-        metadata = oauth.zitadel.load_server_metadata()
-        token_endpoint = metadata.get("token_endpoint")
+        metadata = await oauth.zitadel.load_server_metadata()
+        endpoint = metadata.get("token_endpoint")
 
-        token_data = {
-            "grant_type": "refresh_token",
-            "refresh_token": refresh_token,
-        }
-
-        response = oauth.zitadel._client.post(
-            token_endpoint,
-            data=token_data,
+        response = await oauth.zitadel.async_client.post(
+            endpoint,
+            data={
+                "grant_type": "refresh_token",
+                "refresh_token": refresh_token,
+            },
             auth=(oauth.zitadel.client_id, oauth.zitadel.client_secret),
         )
         response.raise_for_status()
+
         new_token = response.json()
 
         auth_session["access_token"] = new_token.get("access_token")
@@ -46,49 +49,44 @@ def refresh_access_token(auth_session: dict[str, Any]) -> dict[str, Any] | None:
         auth_session["refresh_token"] = new_token.get("refresh_token", refresh_token)
         auth_session["error"] = None
 
-        logger.info("Access token refreshed successfully")
         return auth_session
 
-    except Exception as e:
-        logger.exception("Token refresh failed: %s", str(e))
+    except Exception:
         auth_session["error"] = "RefreshAccessTokenError"
         return None
 
 
-def require_auth(view: F) -> F:
+async def require_auth(request: Request) -> Dict[str, Any]:
     """Middleware that ensures the user is authenticated before accessing protected routes."""
+    session = request.session
+    auth_session: Dict[str, Any] | None = session.get("auth_session")
 
-    @wraps(view)
-    def wrapped(*args: Any, **kwargs: Any) -> Response:
-        auth_session = session.get("auth_session")
+    if not auth_session or not auth_session.get("user"):
+        cb = str(request.url)
+        raise RedirectException(f"{request.url_for('signin')}?callbackUrl={cb}")
 
-        if not auth_session or not auth_session.get("user"):
-            callback_url = request.url
-            logger.info("Unauthenticated access attempt, redirecting to signin")
-            return cast(Response, redirect(url_for("auth.signin", callbackUrl=callback_url, _external=False)))
+    if auth_session.get("error"):
+        session.clear()
+        cb = str(request.url)
+        raise RedirectException(f"{request.url_for('signin')}?callbackUrl={cb}")
 
-        if auth_session.get("error"):
-            logger.warning("Session has error flag, redirecting to signin")
+    expires_at = auth_session.get("expires_at")
+    if expires_at and int(time.time()) >= expires_at:
+        refreshed = await refresh_access_token(auth_session)
+        if refreshed is None:
             session.clear()
-            callback_url = request.url
-            return cast(Response, redirect(url_for("auth.signin", callbackUrl=callback_url, _external=False)))
+            cb = str(request.url)
+            raise RedirectException(f"{request.url_for('signin')}?callbackUrl={cb}")
 
-        expires_at = auth_session.get("expires_at")
-        if expires_at and int(time.time()) >= expires_at:
-            logger.info("Access token expired, attempting refresh")
-            refreshed_session = refresh_access_token(auth_session)
+        session["auth_session"] = refreshed
+        assert refreshed is not None  # for mypy
+        return refreshed
 
-            if refreshed_session:
-                session["auth_session"] = refreshed_session
-                g.auth_session = refreshed_session
-            else:
-                logger.error("Token refresh failed, clearing session")
-                session.clear()
-                callback_url = request.url
-                return cast(Response, redirect(url_for("auth.signin", callbackUrl=callback_url, _external=False)))
-        else:
-            g.auth_session = auth_session
+    return auth_session
 
-        return cast(Response, view(*args, **kwargs))
 
-    return cast(F, wrapped)
+def redirect_exception_handler(request: Request, exc: Exception) -> Response:
+    """Translate internal redirect exceptions into RedirectResponse."""
+    if not isinstance(exc, RedirectException):
+        raise exc
+    return RedirectResponse(url=exc.url, status_code=302)
