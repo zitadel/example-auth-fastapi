@@ -23,7 +23,7 @@ def must(name: str) -> str:
         name: The name of the environment variable to retrieve
 
     Returns:
-        str: The value of the environment variable
+        The value of the environment variable
 
     Raises:
         RuntimeError: If the environment variable is not set
@@ -53,7 +53,7 @@ class Config:
         ZITADEL_POST_LOGOUT_URL: URL to redirect after logout from ZITADEL
         SESSION_SECRET: Secret key for signing session cookies
         SESSION_DURATION: Session lifetime in seconds (default: 3600)
-        PORT: Network port for the Flask server (optional)
+        PORT: Network port for the server (optional)
         PY_ENV: Application environment ('development' or 'production')
     """
 

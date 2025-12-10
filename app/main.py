@@ -1,4 +1,9 @@
-"""Flask application factory for ZITADEL PKCE authentication demo."""
+"""FastAPI application factory for ZITADEL PKCE authentication demo.
+
+This module creates and configures the FastAPI application with all necessary
+middleware, exception handlers, and routes for OAuth 2.0 authentication with
+ZITADEL using the PKCE flow.
+"""
 
 from __future__ import annotations
 
@@ -17,7 +22,10 @@ from lib.auth import register_auth_routes
 from lib.config import config
 from lib.guard import RedirectError, redirect_exception_handler
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
 logger = logging.getLogger(__name__)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,6 +33,18 @@ templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 
 def create_app() -> FastAPI:
+    """Create and configure the FastAPI application.
+
+    Initializes the application with:
+    - Session middleware for secure cookie-based sessions
+    - Static file serving
+    - Custom exception handlers for 404 and authentication redirects
+    - Authentication routes
+    - Application routes
+
+    Returns:
+        FastAPI: Configured application instance ready to run
+    """
     app = FastAPI()
 
     app.state.templates = templates
@@ -42,6 +62,15 @@ def create_app() -> FastAPI:
 
     @app.exception_handler(StarletteHTTPException)
     async def http_exception_handler(request: Request, exc: StarletteHTTPException) -> Response:
+        """Handle HTTP exceptions with custom error pages.
+
+        Args:
+            request: The incoming HTTP request
+            exc: The HTTP exception that was raised
+
+        Returns:
+            Response: Custom 404 page or re-raises other exceptions
+        """
         if exc.status_code == 404:
             return templates.TemplateResponse(
                 request=request,
@@ -55,6 +84,8 @@ def create_app() -> FastAPI:
 
     app.include_router(root_router)
     register_auth_routes(app, templates)
+
+    logger.info("FastAPI application initialized")
 
     return app
 

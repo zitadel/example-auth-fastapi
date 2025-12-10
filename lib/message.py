@@ -1,4 +1,8 @@
-"""Error message handling for authentication flows."""
+"""Error message handling for authentication flows.
+
+Provides user-friendly error messages for various authentication failure
+scenarios, translating technical error codes into helpful guidance.
+"""
 
 from __future__ import annotations
 
@@ -6,7 +10,14 @@ from typing import Optional
 
 
 def _signin_error_message(error_code: str) -> dict[str, str]:
-    """Get error message for sign-in flow errors."""
+    """Get error message for sign-in flow errors.
+
+    Args:
+        error_code: The error code from the authentication flow
+
+    Returns:
+        dict: Contains 'heading' and 'message' for display
+    """
     signin_errors = {
         "signin",
         "oauthsignin",
@@ -53,7 +64,14 @@ def _signin_error_message(error_code: str) -> dict[str, str]:
 
 
 def _auth_error_message(error_code: str) -> dict[str, str]:
-    """Get error message for general authentication errors."""
+    """Get error message for general authentication errors.
+
+    Args:
+        error_code: The error code from the authentication system
+
+    Returns:
+        dict: Contains 'heading' and 'message' for display
+    """
     if error_code == "configuration":
         return {
             "heading": "Server Error",
@@ -79,7 +97,15 @@ def _auth_error_message(error_code: str) -> dict[str, str]:
 
 
 def get_message(error_input: str | list[str] | None, category: str) -> dict[str, str]:
-    """Retrieve a user-friendly error message based on error code and category."""
+    """Retrieve a user-friendly error message based on error code and category.
+
+    Args:
+        error_input: Error code string, list of strings, or None
+        category: Either 'signin-error' or 'auth-error'
+
+    Returns:
+        dict: Contains 'heading' and 'message' keys with error text
+    """
     raw: Optional[str]
     if isinstance(error_input, list) and error_input:
         raw = error_input[0]
