@@ -66,10 +66,6 @@ files = ["."]
 strict = true
 exclude = ["build", "dist", ".venv", ".devbox"]
 
-[[tool.mypy.overrides]]
-module = ["authlib.*"]
-ignore_missing_imports = true
-
 [tool.ruff]
 line-length = 130
 fix = true
