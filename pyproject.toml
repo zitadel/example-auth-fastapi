@@ -62,9 +62,9 @@ data_file = "build/coverage/.coverage"
 omit = []
 
 [tool.mypy]
-python_version = "3.9"
-files = ["app", "lib", "run.py"]
+files = ["."]
 strict = true
+exclude = ["build", "dist", ".venv", ".devbox"]
 
 [[tool.mypy.overrides]]
 module = ["authlib.*"]
