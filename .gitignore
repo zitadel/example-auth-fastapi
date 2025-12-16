@@ -66,8 +66,6 @@ target/
 
 .env
 
-devbox.json
-devbox.lock
 .devbox
 
 .poetry
