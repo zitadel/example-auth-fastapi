@@ -5,7 +5,7 @@ description = "Flask application demonstrating ZITADEL authentication with PKCE 
 requires-python = ">=3.9, !=3.9.0, !=3.9.1"
 dependencies = [
   "FastAPI>=0.110,<1.0",
-  "Authlib>=1.3.2,<2.0.0",
+  "authlib[starlette] (>=1.6.6,<2.0.0)",
   "python-dotenv>=1.0.0,<2.0.0",
   "requests>=2.32.0,<3.0.0",
   "uvicorn>=0.29,<1.0",

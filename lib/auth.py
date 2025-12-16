@@ -12,6 +12,7 @@ import secrets
 from typing import Any, Optional, cast
 from urllib.parse import urlencode
 
+# noinspection PyUnresolvedReferences
 from authlib.integrations.starlette_client import OAuth
 from fastapi import APIRouter, Depends, FastAPI, Form, Request
 from fastapi.responses import JSONResponse, RedirectResponse
