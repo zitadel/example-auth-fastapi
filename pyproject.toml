@@ -65,6 +65,7 @@ omit = []
 files = ["."]
 strict = true
 exclude = ["build", "dist", ".venv", ".devbox"]
+disable_error_code = ["import-untyped"]
 
 [tool.ruff]
 line-length = 130
