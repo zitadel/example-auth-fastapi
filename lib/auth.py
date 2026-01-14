@@ -25,7 +25,7 @@ from lib.scopes import ZITADEL_SCOPES
 logger = logging.getLogger(__name__)
 
 auth_bp = APIRouter(prefix="/auth")
-oauth = OAuth()  # type: ignore[no-untyped-call]
+oauth = OAuth()
 
 
 def get_well_known_url(domain: str) -> str:
