@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from typing import Any, cast
 
 from fastapi import FastAPI, Request
 from fastapi.responses import Response
@@ -50,7 +51,7 @@ def create_app() -> FastAPI:
     app.state.templates = templates
 
     app.add_middleware(
-        SessionMiddleware,
+        cast(Any, SessionMiddleware),
         secret_key=config.SESSION_SECRET,
         same_site="lax",
         https_only=config.PY_ENV == "production",

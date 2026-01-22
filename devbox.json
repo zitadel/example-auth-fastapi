@@ -20,7 +20,7 @@
       ],
       "check": [
         "poetry run ruff check .",
-        "poetry run mypy"
+        "poetry run ty check"
       ],
       "depcheck": [
         "poetry run fawltydeps"

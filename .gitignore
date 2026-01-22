@@ -46,7 +46,7 @@ coverage.xml
 venv/
 .venv/
 .python-version
-.pytest_cache
+.pytest
 
 # Translations
 *.mo
@@ -69,3 +69,6 @@ target/
 .devbox
 
 .poetry
+
+.ruff
+.ty
