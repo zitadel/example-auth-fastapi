@@ -22,7 +22,7 @@ Before you begin, ensure you have the following:
 
 #### System Requirements
 
-- Python (v3.9 or later is recommended)
+- Python (v3.10 or later)
 - Poetry package manager
 
 #### Account Setup
@@ -146,4 +146,3 @@ At minimum, configure:
 - **FastAPI Documentation:** <https://fastapi.tiangolo.com/>
 - **Authlib Documentation:** <https://authlib.org/>
 - **ZITADEL Documentation:** <https://zitadel.com/docs>
-

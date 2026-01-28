@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.10.7/.schema/devbox.schema.json",
   "packages": [
     "poetry@latest",
-    "python39@latest"
+    "python310@latest"
   ],
   "env": {
     "POETRY_CACHE_DIR": "$PWD/.poetry"
