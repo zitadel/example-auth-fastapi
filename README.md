@@ -90,7 +90,7 @@ cd example-fastapi-auth
 poetry install
 
 # 3. Start the development server
-poetry run python run.py
+make start
 ```
 
 The application will now be running at `http://localhost:3000`.
