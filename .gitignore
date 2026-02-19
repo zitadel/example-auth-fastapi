@@ -68,7 +68,7 @@ target/
 
 .devbox
 
-.poetry
+.uv
 
 .ruff
 .ty

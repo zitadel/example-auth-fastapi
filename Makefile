@@ -1,5 +1,5 @@
 .PHONY: start
 
 start:
-	poetry install
-	poetry run python run.py
+	uv sync --group dev
+	uv run python run.py

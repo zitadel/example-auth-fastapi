@@ -1,0 +1,13 @@
+pre-commit:
+  parallel: true
+
+  commands:
+    format:
+      glob: "*.py"
+      run: uv run ruff format .
+
+    check:
+      glob: "*.py"
+      run: |
+        uv run ruff check .
+        uv run ty check

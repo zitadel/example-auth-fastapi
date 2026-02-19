@@ -1,46 +1,31 @@
 [project]
-name = "example-flask-auth"
+name = "example-fastapi-auth"
 version = "0.0.0"
-description = "Flask application demonstrating ZITADEL authentication with PKCE using Authlib"
+description = "FastAPI application demonstrating ZITADEL authentication with PKCE using Authlib"
 requires-python = ">=3.10"
 dependencies = [
   "FastAPI>=0.110,<1.0",
-  "authlib[starlette] (>=1.6.6,<2.0.0)",
+  "Authlib>=1.3.2,<2.0.0",
   "python-dotenv>=1.0.0,<2.0.0",
   "requests>=2.32.0,<3.0.0",
   "uvicorn>=0.29,<1.0",
-  "httpx (>=0.28.1,<0.29.0)",
-  "python-multipart (>=0.0.22,<0.0.23)",
-  "starlette (<0.50.0)",
   "itsdangerous>=2.0.0,<3.0.0",
-  "jinja2>=3.0.0,<4.0.0"
+  "jinja2>=3.0.0,<4.0.0",
+  "python-multipart>=0.0.20,<0.1.0"
 ]
 
 [project.urls]
-repository = "https://github.com/zitadel/example-flask-auth"
+repository = "https://github.com/zitadel/example-fastapi-auth"
 
-[tool.poetry]
-name = "example-flask-auth"
-version = "0.0.0"
-description = "Flask application demonstrating ZITADEL authentication with PKCE using Authlib"
-package-mode = false
-
-[tool.poetry.dependencies]
-FastAPI = ">=0.110,<1.0"
-Authlib = ">=1.3.2,<2.0.0"
-python-dotenv = ">=1.0.0,<2.0.0"
-requests = ">=2.32.0,<3.0.0"
-uvicorn = ">=0.29,<1.0"
-itsdangerous = ">=2.0.0,<3.0.0"
-jinja2 = ">=3.0.0,<4.0.0"
-
-
-[tool.poetry.group.dev.dependencies]
-pytest = ">=7.2.1"
-pytest-cov = ">=4.0.0"
-ruff = ">=0.12.4"
-fawltydeps = "0.19.0"
-ty = ">=0.0.4"
+[dependency-groups]
+dev = [
+  "pytest>=7.2.1",
+  "pytest-cov>=4.0.0",
+  "ruff>=0.12.4",
+  "fawltydeps==0.19.0",
+  "ty>=0.0.4",
+  "httpx>=0.28.0,<0.29.0",
+]
 
 [tool.ty.environment]
 python-version = "3.10"
@@ -52,8 +37,11 @@ include = ["app"]
 exclude = []
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = []
 
 [tool.pytest.ini_options]
 cache_dir = ".pytest"
@@ -83,16 +71,18 @@ extend-select = ["A"]
 ignore = ["S101"]  # Ignore assert statements
 
 [tool.fawltydeps]
+ignore_undeclared = [
+  "starlette",
+]
 ignore_unused = [
   "fawltydeps",
   "requests",
   "pytest-cov",
   "pytest",
   "ruff",
-  'starlette',
-  'httpx',
-  'python-multipart',
-  'itsdangerous',
-  'jinja2',
+  "httpx",
+  "python-multipart",
+  "itsdangerous",
+  "jinja2",
   "ty"
 ]

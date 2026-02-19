@@ -23,7 +23,7 @@ Before you begin, ensure you have the following:
 #### System Requirements
 
 - Python (v3.10 or later)
-- Poetry package manager
+- uv package manager
 
 #### Account Setup
 
@@ -87,7 +87,7 @@ git clone git@github.com:zitadel/example-fastapi-auth.git
 cd example-fastapi-auth
 
 # 2. Install the project dependencies
-poetry install
+uv sync --group dev
 
 # 3. Start the development server
 make start
