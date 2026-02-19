@@ -464,7 +464,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "fawltydeps", specifier = "==0.19.0" },
+    { name = "fawltydeps", specifier = "==0.20.0" },
     { name = "httpx", specifier = ">=0.28.0,<0.29.0" },
     { name = "pytest", specifier = ">=7.2.1" },
     { name = "pytest-cov", specifier = ">=4.0.0" },
@@ -502,7 +502,7 @@ wheels = [
 
 [[package]]
 name = "fawltydeps"
-version = "0.19.0"
+version = "0.20.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "importlib-metadata" },
@@ -513,9 +513,9 @@ dependencies = [
     { name = "pyyaml" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/dc/6d/36114743a9ee46b7c3eb31f00ec13746cfb5f33da38b6ab08e84c0eb3357/fawltydeps-0.19.0.tar.gz", hash = "sha256:0fbe9b1736f3a1c7060d5b3489e24f594187a0c98afa5ea888b27e70e63b0ae0", size = 48320, upload-time = "2025-02-28T12:50:55.355Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b1/83/c84f7f6500d15f0f1e56eb1dde7cc42c7ab3dd536d8d6363b4937c89e79b/fawltydeps-0.20.0.tar.gz", hash = "sha256:ad080b284a2278c9940540b643483aff8b57794a1362735d3024c270810c0182", size = 48949, upload-time = "2025-06-05T09:52:30.723Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/58/c8/581e08c6d7ead9e4fa9e7ad858609d726687764a83a517f7dac2d904a114/fawltydeps-0.19.0-py3-none-any.whl", hash = "sha256:fbdd3da5620dd3c6b12a8c00ac655d17376aacf6d105fa61fe44fa4fa195baed", size = 55610, upload-time = "2025-02-28T12:50:53.437Z" },
+    { url = "https://files.pythonhosted.org/packages/cf/95/3c90282ffeab315db5250d15685a3d80be29d7c8036f4ea8ff753ff6ae02/fawltydeps-0.20.0-py3-none-any.whl", hash = "sha256:d3bfb260c54135ec5dfa2583a7381c45d2759deb23f6de6f4905da9adac67512", size = 57400, upload-time = "2025-06-05T09:52:29.385Z" },
 ]
 
 [[package]]
