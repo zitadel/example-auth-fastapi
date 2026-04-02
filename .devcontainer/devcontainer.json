@@ -1,0 +1,27 @@
+{
+  "name": "ZITADEL Example FastAPI Auth",
+  "image": "mcr.microsoft.com/devcontainers/python:3.10-bookworm",
+  "features": {
+    "ghcr.io/va-h/devcontainers-features/uv:1": {}
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Application",
+      "onAutoForward": "notify"
+    }
+  },
+  "otherPortsAttributes": {
+    "onAutoForward": "silent"
+  },
+  "onCreateCommand": "cp -n .env.example .env",
+  "updateContentCommand": "uv sync --group dev",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff"
+      ]
+    }
+  }
+}
