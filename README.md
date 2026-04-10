@@ -70,7 +70,8 @@ ZITADEL_CLIENT_SECRET="your-randomly-generated-client-secret"
 # MUST exactly match a Redirect URI configured in your ZITADEL application.
 ZITADEL_CALLBACK_URL="http://localhost:3000/auth/callback"
 
-# URL where users are redirected after successful login.
+# Optional. URL where users are redirected after successful login.
+# Defaults to "/profile" if not specified.
 ZITADEL_POST_LOGIN_URL="/profile"
 
 # URL where users are redirected after logout.
