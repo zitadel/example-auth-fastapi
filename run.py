@@ -1,6 +1,6 @@
-"""Application entry point for the Flask ZITADEL authentication demo.
+"""Application entry point for the FastAPI ZITADEL authentication demo.
 
-This module creates and runs the Flask application. It loads configuration
+This module creates and runs the FastAPI application. It loads configuration
 from environment variables and starts the development server.
 """
 
