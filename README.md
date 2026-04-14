@@ -84,8 +84,8 @@ Follow these steps to get the application running:
 
 ```bash
 # 1. Clone the repository
-git clone git@github.com:zitadel/example-fastapi-auth.git
-cd example-fastapi-auth
+git clone git@github.com:zitadel/example-auth-fastapi.git
+cd example-auth-fastapi
 
 # 2. Install the project dependencies
 uv sync --group dev
