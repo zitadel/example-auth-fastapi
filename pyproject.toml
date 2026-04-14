@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.urls]
-repository = "https://github.com/zitadel/example-fastapi-auth"
+repository = "https://github.com/zitadel/example-auth-fastapi"
 
 [dependency-groups]
 dev = [
