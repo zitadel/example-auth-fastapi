@@ -2,6 +2,7 @@
 name = "example-fastapi-auth"
 version = "0.0.0"
 description = "FastAPI application demonstrating ZITADEL authentication with PKCE using Authlib"
+license = "Apache-2.0"
 requires-python = ">=3.10"
 dependencies = [
   "FastAPI>=0.110,<1.0",
