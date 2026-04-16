@@ -220,7 +220,7 @@
     loginForm.onsubmit = async (e) => {
       e.preventDefault();
       loginButton.disabled = true;
-      buttonText.textContent = 'Loading...';
+      buttonText.textContent = 'Loading…';
       try {
         const { csrfToken } = await fetch('/auth/csrf').then(r => r.json());
         const input = Object.assign(
